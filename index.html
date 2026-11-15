@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111f">
+<meta name="description" content="Team Optimus Earth Jukebox: hear NASA Earth Information Center visualizations and explore Earth data.">
+<title>Earth Jukebox | Team Optimus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="intro.css">
+<script src="https://unpkg.com/globe.gl"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- CINEMATIC GALAXY INTRO -->
+<div id="introScreen">
+
+    <canvas id="galaxyCanvas"></canvas>
+
+    <div class="intro-content">
+        <h1>EARTH JUKEBOX</h1>
+        <p>EXPLORING EARTH THROUGH SOUND</p>
+    </div>
+
+    <button id="skipIntro">Skip Intro →</button>
+
+</div>
+
+<!-- MAIN WEBSITE START -->
+<div id="mainWebsite">
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="topbar">
+ <a class="brand" href="#" aria-label="Earth Jukebox home"><span class="brand-mark" aria-hidden="true">◉</span><span>EARTH<span class="brand-light"> JUKEBOX</span><small>TEAM OPTIMUS</small></span></a>
+ <div class="top-actions"><span class="live-dot" aria-hidden="true"></span><span class="status-label">A MULTISENSORY EARTH EXPERIENCE</span><button id="voiceBtn" class="voice-button" type="button" aria-pressed="false"><span aria-hidden="true">🎙</span> Voice commands</button></div>
+</header>
+<main id="main" class="page-shell">
+ <section class="intro"><div><p class="eyebrow">NASA SPACE APPS CHALLENGE 2026</p><h1>Hear the <span>Earth change.</span></h1><p class="intro-copy">Explore environmental measurements anywhere on Earth, then listen to the data. Switch to EIC Jukebox to hear NASA Earth Information Center visual frames transformed into sound.</p></div><div class="intro-note"><span aria-hidden="true">✦</span> Sound generated from data — not an AI soundtrack.</div></section>
+
+ <nav class="mode-tabs" aria-label="Application modes">
+  <button class="mode-tab active" data-mode="explorer" type="button" aria-pressed="true">Global Data Explorer</button>
+  <button class="mode-tab" data-mode="eic" type="button" aria-pressed="false">EIC Jukebox <span class="required-tag">CHALLENGE CORE</span></button>
+ </nav>
+
+ <section id="explorerMode" class="mode-view">
+  <section class="workspace" aria-label="Global Earth explorer">
+   <div class="globe-panel panel">
+    <div class="panel-heading"><div><p class="eyebrow">01 / GLOBAL EXPLORER</p><h2>Choose a place</h2></div><span class="pill"><span class="live-dot"></span> Interactive globe</span></div>
+    <div class="search-row"><label class="sr-only" for="placeSearch">Search for a place</label><input id="placeSearch" type="search" placeholder="Search a city or place (e.g. Delhi)" autocomplete="off"><button id="searchBtn" class="secondary-button" type="button">Find place</button></div>
+    <div id="globeViz" role="img" aria-label="Interactive 3D Earth. Click to select coordinates, or use the place search or coordinate fields."></div>
+    <div class="globe-hint"><span aria-hidden="true">⌖</span> Click anywhere on the globe or search for a place.</div>
+    <div class="coordinate-grid"><div><label for="latitude">Latitude</label><input id="latitude" type="number" min="-90" max="90" step="any" value="28.6139"></div><div><label for="longitude">Longitude</label><input id="longitude" type="number" min="-180" max="180" step="any" value="77.2090"></div><button id="applyCoords" class="secondary-button apply-button" type="button">Use coordinates</button></div>
+    <p id="locationLabel" class="location-label" aria-live="polite">Selected location: Delhi, India (28.6139°, 77.2090°)</p>
+   </div>
+   <aside class="controls-panel panel">
+    <div class="panel-heading"><div><p class="eyebrow">02 / DATA CONTROLS</p><h2>Build a soundscape</h2></div></div>
+    <label class="field-label" for="yearSelect">YEAR</label><select id="yearSelect" class="select-control"></select>
+    <p class="field-help">Daily historical data availability varies by parameter. The current year may be incomplete.</p>
+    <div class="field-label variable-label">SELECT A DATA LAYER</div>
+    <div class="variable-list" role="radiogroup" aria-label="Environmental data variable">
+     <label class="variable-option selected"><input type="radio" name="variable" value="T2M" checked><span class="variable-icon">温</span><span><b>Temperature</b><small>Air temperature · °C</small></span><span class="variable-check">●</span></label>
+     <label class="variable-option"><input type="radio" name="variable" value="RH2M"><span class="variable-icon">◌</span><span><b>Humidity</b><small>Relative humidity · %</small></span><span class="variable-check">●</span></label>
+     <label class="variable-option"><input type="radio" name="variable" value="PRECTOTCORR"><span class="variable-icon">⌁</span><span><b>Precipitation</b><small>Corrected precipitation · mm/day</small></span><span class="variable-check">●</span></label>
+     <label class="variable-option"><input type="radio" name="variable" value="WS10M"><span class="variable-icon">≋</span><span><b>Wind speed</b><small>At 10 metres · m/s</small></span><span class="variable-check">●</span></label>
+     <label class="variable-option"><input type="radio" name="variable" value="PS"><span class="variable-icon">◉</span><span><b>Surface pressure</b><small>Atmospheric pressure · kPa</small></span><span class="variable-check">●</span></label>
+     <label class="variable-option"><input type="radio" name="variable" value="ALLSKY_SFC_SW_DWN"><span class="variable-icon">☼</span><span><b>Solar radiation</b><small>Surface shortwave · MJ/m²/day</small></span><span class="variable-check">●</span></label>
+    </div>
+    <button id="loadData" class="primary-button" type="button">↗ Load NASA data</button><p class="source-mini">NASA POWER · Daily point API</p>
+   </aside>
+  </section>
+  <section class="results-section panel" aria-labelledby="resultsTitle">
+   <div class="panel-heading results-heading"><div><p class="eyebrow">03 / EARTH'S YEAR IN DATA</p><h2 id="resultsTitle">The changing pattern</h2></div><span id="dataStatus" class="pill status-pill" role="status">Waiting for a location</span></div>
+   <div class="metric-row"><div class="metric-card"><span>YEARLY MEAN</span><strong id="meanValue">—</strong><small id="meanUnit">Select a dataset</small></div><div class="metric-card"><span>HIGHEST DAILY VALUE</span><strong id="maxValue">—</strong><small id="maxDate">—</small></div><div class="metric-card"><span>LOWEST DAILY VALUE</span><strong id="minValue">—</strong><small id="minDate">—</small></div><div class="metric-card"><span>VALID DAILY RECORDS</span><strong id="recordCount">—</strong><small>Missing values excluded</small></div></div>
+   <div class="chart-wrap"><canvas id="yearChart" role="img" aria-label="Line chart of daily environmental measurements. An accessible monthly table is available below."></canvas></div>
+   <div class="data-actions"><button id="downloadCsv" class="secondary-button" type="button" disabled>Download daily CSV</button><button id="speakSummary" class="secondary-button" type="button" disabled>Read data summary aloud</button></div>
+   <details class="data-details"><summary>Accessible monthly data table</summary><div class="table-scroll"><table><caption>Monthly averages calculated from available daily NASA POWER records</caption><thead><tr><th scope="col">Month</th><th scope="col">Average</th><th scope="col">Valid days</th></tr></thead><tbody id="monthlyTable"><tr><td colspan="3">Load data to populate this table.</td></tr></tbody></table></div></details>
+  </section>
+  <section class="player-section panel"><div class="player-copy"><p class="eyebrow">04 / DATA-TO-SOUND ENGINE</p><h2>Listen to the pattern</h2><p id="mappingText">Temperature maps to musical pitch: higher measurements create higher notes. One note represents each month's average.</p></div><div class="player-controls"><div class="sound-wave" id="soundWave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="player-buttons"><button id="playSound" class="play-button" type="button" disabled>▶ Play yearly sonification</button><button id="stopSound" class="secondary-button" type="button" disabled>Stop</button></div><p id="audioStatus" class="audio-status" aria-live="polite">Load data to generate a soundscape. Audio starts only after you press Play.</p></div></section>
+ </section>
+
+ <section id="eicMode" class="mode-view hidden">
+  <section class="eic-intro panel"><div><p class="eyebrow">NASA EARTH INFORMATION CENTER</p><h2>The EIC Jukebox</h2><p>Watch an official EIC visualization and hear its changing visual information translated into notes in real time. This is the core challenge experience.</p></div><a class="secondary-button link-button" href="https://svs.gsfc.nasa.gov/gallery/earth-information-center/" target="_blank" rel="noopener">Open NASA EIC gallery ↗</a></section>
+  <section class="eic-grid">
+   <div class="panel eic-player-panel">
+    <div class="panel-heading"><div><p class="eyebrow">01 / VERIFIED EIC VISUAL</p><h2>Change in Night Lights · 2012–2023</h2></div><span class="pill">NASA SVS ID 5313</span></div>
+    <p class="field-help eic-description">An EIC-version visualization showing annual average night lights and change across the globe. NASA SVS identifies this item as EIC Version.</p>
+    <div class="video-frame"><video id="eicVideo" controls playsinline preload="metadata" crossorigin="anonymous" aria-label="NASA EIC night lights visualization video. Its frames are analyzed to generate synchronized sound."><source src="https://svs.gsfc.nasa.gov/vis/a010000/a005300/a005313/nightlights_flat_series_and_change_wZooms_13_EIC_2160p30_h265.mp4" type="video/mp4">Your browser does not support HTML video.</video></div>
+    <div class="eic-video-controls"><button id="eicPlay" class="play-button" type="button">▶ Play EIC with sound</button><button id="eicStop" class="secondary-button" type="button">Stop sonification</button></div>
+    <div class="mapping-card"><b>How this EIC track becomes sound</b><p>At regular intervals, the application samples the displayed video frame, measures its average luminance and maps that measured brightness to a note in a pentatonic scale. Brighter sampled frames produce higher notes. The sound is synthesized in the browser while the video plays; it is not the video's soundtrack.</p><p class="mapping-caveat">This first EIC track uses whole-frame average brightness as a simple visual feature. It does not claim that brightness alone measures night-light intensity scientifically; the video includes titles, transitions and map areas. Listen as a visual-pattern sonification, not as a calibrated radiance measurement.</p></div>
+    <p id="eicStatus" class="audio-status" role="status" aria-live="polite">Press Play EIC with sound. If browser cross-origin restrictions prevent frame analysis, download the NASA video and load it using the local file option.</p>
+    <div class="upload-box"><label for="eicFile"><b>Use a downloaded EIC video</b><small>Recommended fallback if the NASA-hosted video cannot be sampled by your browser. Use only a video from the official EIC gallery.</small></label><input id="eicFile" type="file" accept="video/mp4,video/webm,video/quicktime"></div>
+    <canvas id="eicCanvas" class="sr-only" aria-hidden="true"></canvas>
+   </div>
+   <aside class="panel eic-side-panel">
+    <p class="eyebrow">02 / SOUND LEGEND</p><h2>Hear what you see</h2>
+    <div class="legend-row"><span class="legend-swatch bright"></span><div><b>Brighter frame</b><small>Higher note</small></div></div>
+    <div class="legend-row"><span class="legend-swatch dim"></span><div><b>Darker frame</b><small>Lower note</small></div></div>
+    <div class="legend-row"><span class="legend-swatch pulse"></span><div><b>Frame sampling</b><small>One sound event per sampled moment</small></div></div>
+    <div class="eic-feature"><p class="eyebrow">03 / ACCESSIBILITY</p><h3>Listen without looking</h3><p>Keyboard-accessible video controls, spoken description, visible mapping legend, and a text explanation accompany the sonification. Use Tab to reach controls and Space/Enter to activate them.</p><button id="speakEic" class="secondary-button" type="button">Read EIC track description</button></div>
+    <div class="eic-source"><p class="eyebrow">SOURCE & CREDIT</p><b>NASA Scientific Visualization Studio</b><p>Change in Night Lights between 2012 and 2023 – EIC Version (SVS 5313). NASA SVS credits Kel Elkins.</p><a href="https://svs.gsfc.nasa.gov/5313/" target="_blank" rel="noopener">View source, media and credits ↗</a></div>
+   </aside>
+  </section>
+  <section class="panel eic-catalog"><div class="panel-heading"><div><p class="eyebrow">04 / EXPLORE MORE EIC CONTENT</p><h2>Official EIC gallery</h2></div></div><p class="field-help">These official EIC gallery links are verified starting points. Only the night-lights track above is wired into this prototype's frame-sampling sonification; other items must be added after verifying their media files and usage restrictions.</p><div class="catalog-grid">
+   <a href="https://svs.gsfc.nasa.gov/5313/" target="_blank" rel="noopener"><b>Change in Night Lights · EIC Version</b><small>SVS 5313 · video and frame set</small></a>
+   <a href="https://svs.gsfc.nasa.gov/5196/" target="_blank" rel="noopener"><b>DYAMOND Global Carbon Dioxide</b><small>SVS 5196 · EIC gallery item</small></a>
+   <a href="https://svs.gsfc.nasa.gov/5425/" target="_blank" rel="noopener"><b>Perpetual Ocean 2</b><small>SVS 5425 · ocean currents visualization</small></a>
+   <a href="https://svs.gsfc.nasa.gov/5533/" target="_blank" rel="noopener"><b>Air Quality Model Runs</b><small>SVS 5533 · EIC gallery item</small></a>
+  </div><a class="gallery-link" href="https://svs.gsfc.nasa.gov/gallery/earth-information-center/" target="_blank" rel="noopener">Browse the complete NASA EIC gallery ↗</a></section>
+ </section>
+
+ <section class="accessibility-note"><span class="access-icon" aria-hidden="true">◉</span><div><b>Designed for more ways to explore.</b><p>Use place search or coordinates without the globe. Controls are keyboard accessible and labelled for assistive technology. Voice commands are optional and browser-dependent; text and keyboard alternatives remain available.</p></div><div class="narrator-controls">
+  <button id="narratorPlay" type="button">
+    ▶ Play Narration
+  </button>
+
+  <button id="narratorPause" type="button">
+    ⏸ Pause Narration
+  </button>
+
+  <button id="narratorStop" type="button">
+    ■ Stop Narration
+  </button>
+</div></section>
+</main>
+<footer class="footer"><span>EARTH JUKEBOX · TEAM OPTIMUS</span><span>Independent student project. Not endorsed by NASA.</span></footer>
+<div id="liveAnnouncement" class="sr-only" aria-live="assertive" aria-atomic="true"></div> </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script src="galaxy.js"></script>
+<script src="earth-camera.js"></script>
+<script src="intro.js"></script>
+
+<script src="app.js"></script>
+</body></html>
